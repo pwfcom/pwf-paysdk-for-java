@@ -63,7 +63,7 @@ public class Main {
             System.out.println("response_body:" + res);
 
 
-            //处理异步回调通知例子
+            //處理異步回調通知例子
             String json_string = "{'ret':1000,'msg':'\\u8bf7\\u6c42\\u6210\\u529f','data':'WDlwdnBoSkFDeS96bVdIYjg4WUNaaXVuV3NTQ3JHWU9t.........'}";
             NotifyPayResponse resonpse = ApiClient.callback().pay(json_string);
             System.out.println("response_body:" + resonpse);
