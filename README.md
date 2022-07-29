@@ -49,7 +49,6 @@ public class Main {
             Map<String, Object> params = new HashMap<String, Object>();
             
             params.put("trade_name", "trade_name");
-            params.put("pay_type", 1);
             params.put("fiat_currency", "EUR");
             params.put("fiat_amount", 0.01);
             params.put("out_trade_no", "order-009");
