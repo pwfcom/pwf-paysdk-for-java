@@ -1,21 +1,21 @@
 
-欢迎使用 Pwf Pay SDK for Java 。
+歡迎使用 Pwf Pay SDK for Java 。
 
-## 环境要求
-1. 需要配合`JDK 1.8`或其以上版本。
+## 環境要求
+1. 需要配合`JDK 1.8`或以上版本。
 
 
-2. 使用 Pwf Pay SDK for Java 之前 ，您需要先前往[PWF开发平台](https://pwf.com/)注册并完成开发者接入的一些准备工作，包括创建应用、为应用设置接口加签方式等。
+2. 使用 Pwf Pay SDK for Java 之前 ，您需要先前往https://pwf.com申請開通賬戶並完成開發者接入的一些準備工作，包括創建應用、為應用設置接口相關配置信息等。
 
-3. 准备工作完成后，注意保存如下信息，后续将作为使用SDK的输入。
+3. 準備工作完成後，注意保存如下信息，後續將作為使用SDK的輸入。
 
-* 加签模式为公钥证书模式
+* 加簽模式為公私鑰證書模式
 
-`AppID`、`应用的私钥`、`PWF公钥`
+`AppID`、`應用的私鑰`、`PWF公鑰`
 
-## 安装依赖
-### 通过[Maven](https://mvnrepository.com/artifact/com.pwf.sdk/pwf-paysdk)来管理项目依赖
-推荐通过Maven来管理项目依赖，您只需在项目的`pom.xml`文件中声明如下依赖
+## 安裝依賴
+### 通過[Maven](https://mvnrepository.com/artifact/com.pwf.sdk/pwf-paysdk)來管理項目依賴
+推薦通過Maven來管理項目依賴，您只需在項目的`pom.xml`文件中聲明如下依賴
 
 ```xml
 <dependency>
@@ -25,13 +25,13 @@
 </dependency>
 ```
 
-## 快速开始
-### 普通调用
-以下这段代码示例向您展示了使用Pwf Pay SDK for Java调用一个API的3个主要步骤：
+## 快速開始
+### 普通調用
+以下這段代碼示例向您展示了使用Pwf Pay SDK for Java調用一個API的3個主要步驟：
 
-1. 设置参数（全局只需设置一次）。
-2. 发起API调用。
-3. 处理响应或异常。
+1. 設置參數（全局只需設置一次）。
+2. 發起API調用。
+3. 處理響應或異常。
 
 ```java
 import com.pwf.paysdk.api.response.NotifyPayResponse;
@@ -40,12 +40,12 @@ import com.pwf.paysdk.base.Config;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        // 设置参数（全局只需设置一次）
+        // 設置參數（全局只需設置一次）
         Config config = getOptions();
         ApiClient.setOptions(config);
         
         try {
-             // 发起API调用例子
+            // 發起API調用例子
             Map<String, Object> params = new HashMap<String, Object>();
             
             params.put("trade_name", "trade_name");
@@ -69,7 +69,7 @@ public class Main {
             System.out.println("response_body:" + resonpse);
             
         } catch (Exception e) {
-            System.err.println("调用遭遇异常，原因：" + e.getMessage());
+            System.err.println("調用遭遇異常，原因：" + e.getMessage());
             throw new RuntimeException(e.getMessage(), e);
         }
     }
@@ -77,17 +77,17 @@ public class Main {
     private static Config getOptions() {
     
         Config config = new Config();
-        config.apiUrl = "<-- 请填写平台分配的接口域名，例如：https://xxx.pwf.com/ -->";
-        config.appToken = "<-- 请填写您的appToken，例如：377b26eb8c25bd... -->";
-        config.merchantNo = "<-- 请填写您的商户号，例如：202207...964 -->";
+        config.apiUrl = "<-- 請填寫平台分配的接口域名，例如：https://xxx.pwf.com/ -->";
+        config.appToken = "<-- 請填寫您的appToken，例如：377b26eb8c25bd... -->";
+        config.merchantNo = "<-- 請填寫您的商戶號，例如：202207...964 -->";
     
-        //語系(參考文檔中最下方語系表，如:EN)
-        config.lang = "CN";
+        //語系(參考文檔中最下方語系表，如:TC)
+        config.lang = "TC";
         
-        config.merchantPrivateCertPath = "<-- 请填写您的应用私钥路径，例如：/foo/MyPrivateKey.pem -->";
-        config.pwfPublicCertPath = "<-- 请填写PWF平台公钥证书文件路径，例如：/foo/PwfPublicKey.pem -->";
+        config.merchantPrivateCertPath = "<-- 請填寫您的應用私鑰路徑，例如：/foo/MyPrivateKey.pem -->";
+        config.pwfPublicCertPath = "<-- 請填寫PWF平台公鑰證書文件路徑，例如：/foo/PwfPublicKey.pem -->";
     
-        config.notifyUrl = "<-- 请填写您的异步通知接收服务地址，例如：https://www.notify.com/notify -->";
+        config.notifyUrl = "<-- 請填寫您的異步通知接收服務地址，例如：https://www.notify.com/notify -->";
 
         return config;
     }
