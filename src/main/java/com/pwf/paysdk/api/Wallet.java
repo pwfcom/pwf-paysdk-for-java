@@ -42,7 +42,7 @@ public class Wallet {
     		HttpRequest request = new HttpRequest();
     		request.host = _kernel.getConfig("apiUrl");
             request.method = "POST";
-            request.pathname = "/api/v2/wallet/payAddress";
+            request.pathname = "/api/v2/wallet/orderStatus";
             
             request.posts = _kernel.buildPostParams(params);
     
@@ -62,7 +62,7 @@ public class Wallet {
     		HttpRequest request = new HttpRequest();
     		request.host = _kernel.getConfig("apiUrl");
             request.method = "POST";
-            request.pathname = "/api/v2/wallet/payAddress";
+            request.pathname = "/api/v2/wallet/recharge";
             
             request.posts = _kernel.buildPostParams(params);
     
