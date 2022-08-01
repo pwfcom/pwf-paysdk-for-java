@@ -19,7 +19,7 @@ public class WalletOrderStatusResponse {
 
 	@NameInMap("pay_at")
     @Validation(required = true)
-    public int pay_at;
+    public String pay_at;
     
 	@NameInMap("fiat_currency")
     @Validation(required = true)
