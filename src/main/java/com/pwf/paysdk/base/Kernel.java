@@ -119,8 +119,8 @@ public class Kernel {
     }
     
     public String decryptResponseData(String data) throws Exception{
-        byte[] decodeDataBytes = Base64.decodeBase64(data.getBytes(StandardCharsets.UTF_8));
-        return rsaEncryptor.doDecrypt(new String(decodeDataBytes), CHARSET_UTF8,merchantPrivateKey);
+        //byte[] decodeDataBytes = Base64.decodeBase64(data.getBytes(StandardCharsets.UTF_8));
+        return rsaEncryptor.doDecrypt(data, CHARSET_UTF8,merchantPrivateKey);
     }
     
     public static String getSignCheckContent(Map<String, String> params) {

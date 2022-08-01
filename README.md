@@ -54,11 +54,11 @@ public class Main {
             params.put("out_trade_no", "order-009");
             params.put("subject", "order-test");
             params.put("timestamp", 1657895835);
+            params.put("notify_url", "https://www.notify.com/notify");
             params.put("return_url", "https://www.return.com/return");
             params.put("collection_model", 1);
             params.put("merchant_no", config.merchantNo);
-            params.put("notify_url", config.notifyUrl);
-
+            
             WalletPayAddressResponse res = ApiClient.wallet().payAddress(params);
             System.out.println("response_body:" + res);
 
