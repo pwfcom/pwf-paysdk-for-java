@@ -87,8 +87,6 @@ public class Main {
         config.merchantPrivateCertPath = "<-- 請填寫您的應用私鑰路徑，例如：/foo/MyPrivateKey.pem -->";
         config.pwfPublicCertPath = "<-- 請填寫PWF平台公鑰證書文件路徑，例如：/foo/PwfPublicKey.pem -->";
     
-        config.notifyUrl = "<-- 請填寫您的異步通知接收服務地址，例如：https://www.notify.com/notify -->";
-
         return config;
     }
 }

@@ -10,4 +10,8 @@ public class ApiResponseBean {
 	
     @Validation(required = true)
     public String data;
+    
+	@NameInMap("lang")
+    @Validation(required = true)
+    public String lang;
 }

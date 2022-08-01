@@ -31,7 +31,6 @@ public class ApiResponse {
 		this.response = response;
 	}
 
-    @SuppressWarnings("unchecked")
     public ApiResponseBean readAsJson(String responseBody)  {
         return new Gson().fromJson(responseBody, ApiResponseBean.class);
     }
@@ -64,4 +63,7 @@ public class ApiResponse {
 		return bean.data;
 	}
 
+	public String getLang() {
+		return bean.lang;
+	}
 }

@@ -1,6 +1,5 @@
 package com.pwf.paysdk.base;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import com.pwf.paysdk.utils.RSAEncryptor;
 import com.pwf.paysdk.utils.StringUtils;
 import com.pwf.paysdk.utils.codec.Base64;
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.pwf.paysdk.api.response.WalletPayAddressResponse;
+import com.google.gson.reflect.TypeToken;
 import com.pwf.paysdk.http.HttpClient;
 import com.pwf.paysdk.http.HttpRequest;
 import com.pwf.paysdk.http.HttpResponse;
@@ -91,7 +90,7 @@ public class Kernel {
         try {
             return rsaEncryptor.doSign(content, CHARSET_UTF8,privateKeyPem);
         } catch (Exception e) {
-            String errorMessage = "签名遭遇异常，content=" + content + "\n privateKeySize=" + privateKeyPem.length() + " reason=" + e.getMessage();
+            String errorMessage = "Signature Exception，content=" + content + "\n privateKeySize=" + privateKeyPem.length() + " reason=" + e.getMessage();
             LOGGER.error(errorMessage, e);
             throw new RuntimeException(errorMessage, e);
         }
@@ -105,17 +104,17 @@ public class Kernel {
         if (result.isSuccess()) {
         	
         	String decryptData = decryptResponseData(result.getData());
-        	Map dataMap = new Gson().fromJson(decryptData, Map.class);
+        	Map<String, String> dataMap = new Gson().fromJson(decryptData, new TypeToken<Map<String, String>>() {}.getType());
         	if(verify(dataMap)) {
         		T returnData = new Gson().fromJson(decryptData, returnClass);
         		return returnData;
         	}	
 
-        	throw new PwfError("验签失败，请检查Pwf平台公钥或商户私钥是否配置正确。");
+        	throw new PwfError("the signature check fails, please check whether the Pwf platform public key or merchant private key is configured correctly.");
         }else if(!StringUtils.isEmpty(result.getRet())){
-            throw new PwfError(result.getMsg());
+            throw new PwfError(result.getRet() +":"+result.getMsg());
         }else {
-        	throw new PwfError("返回数据出错");
+        	throw new PwfError("no response returned");
         }
     }
     
@@ -132,10 +131,14 @@ public class Kernel {
         StringBuilder content = new StringBuilder();
         List<String> keys = new ArrayList<>(params.keySet());
         Collections.sort(keys);
+        int index = 0;
         for (int i = 0; i < keys.size(); i++) {
             String key = keys.get(i);
-            String value = String.valueOf(params.get(key));
-            content.append(i == 0 ? "" : "&").append(key).append("=").append(value);
+            String value = params.get(key);
+            if(!Strings.isNullOrEmpty(key) && !Strings.isNullOrEmpty(value)) {
+            	content.append(index == 0 ? "" : "&").append(key).append("=").append(value);
+            	index++;
+            }
         }
         return content.toString();
     }
