@@ -57,7 +57,7 @@ public class Main {
             params.put("notify_url", "https://www.notify.com/notify");
             params.put("return_url", "https://www.return.com/return");
             params.put("collection_model", 1);
-            params.put("merchant_no", config.merchantNo);
+            params.put("merchant_no", "2022072091622963");
             
 			ApiResponse res = pwfClient.execute("/api/v2/wallet/payAddress",params);
 	        if (res.isSuccess()) {
