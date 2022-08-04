@@ -3,7 +3,7 @@ package com.pwf.paysdk.base;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.pwf.paysdk.http.HttpResponse;
+import com.google.gson.reflect.TypeToken;
 import com.pwf.paysdk.utils.StringUtils;
 
 
@@ -11,24 +11,21 @@ public class ApiResponse {
     
 	public final int SUCCESS_CODE = 1000;
 	
-	private HttpResponse response;
-	
 	private ApiResponseBean bean;
 	
 	private String body;
 
-	public ApiResponse () {
-		
+    public PwfClient _kernel;
+
+	private Map<String, String> dataMap;
+	
+	public ApiResponse (PwfClient kernel) {
+		this._kernel = kernel;
 	}
 	
-	public ApiResponse (String body)  {
+	public void setRequestBody (String body)  {
 		this.body = body;
 		this.bean = readAsJson(body);
-	}
-	
-	public ApiResponse (HttpResponse response) {
-		bean = readAsJson(response.getResponseBody());
-		this.response = response;
 	}
 
     public ApiResponseBean readAsJson(String responseBody)  {
@@ -47,8 +44,23 @@ public class ApiResponse {
 		return false;
 	}
 	
-	public String getResponseBody() {
-		return body != null ? body : response.getResponseBody();
+	public Boolean Verify()
+    {
+		try {
+			String decryptData = _kernel.decryptResponseData(getData());
+			Map<String, String> decryptDataMap = new Gson().fromJson(decryptData, new TypeToken<Map<String, String>>() {}.getType());
+
+		
+			if (decryptDataMap != null && _kernel.verify(decryptDataMap))
+			{
+				this.dataMap = decryptDataMap;
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	public int getRet() {
@@ -63,7 +75,8 @@ public class ApiResponse {
 		return bean.data;
 	}
 
-	public String getLang() {
-		return bean.lang;
+	public Map<String, String> getDataMap()
+	{
+		return dataMap;
 	}
 }

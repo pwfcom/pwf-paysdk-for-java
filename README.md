@@ -34,15 +34,15 @@
 3. 處理響應或異常。
 
 ```java
-import com.pwf.paysdk.api.response.NotifyPayResponse;
-import com.pwf.paysdk.base.ApiClient;
+import com.pwf.paysdk.base.ApiResponse;
+import com.pwf.paysdk.base.PwfClient;
 import com.pwf.paysdk.base.Config;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         // 設置參數（全局只需設置一次）
         Config config = getOptions();
-        ApiClient.setOptions(config);
+        PwfClient pwfClient = new PwfClient(config);
         
         try {
             // 發起API調用例子
@@ -59,14 +59,30 @@ public class Main {
             params.put("collection_model", 1);
             params.put("merchant_no", config.merchantNo);
             
-            WalletPayAddressResponse res = ApiClient.wallet().payAddress(params);
-            System.out.println("response_body:" + res);
+			ApiResponse res = pwfClient.execute("/api/v2/wallet/payAddress",params);
+	        if (res.isSuccess()) {
+	        	
+	        	if(res.Verify()) {
+	        		System.out.println(res.getDataMap().toString());
+	        	}else {
+	        		throw new RuntimeException("the signature check fails, please check whether the Pwf platform public key or merchant private key is configured correctly.");
+	        	}
+	        }else {
+	        	throw new RuntimeException(res.getRet() +":"+res.getMsg());
+	        }
 
 
             //處理異步回調通知例子
             String json_string = "{'ret':1000,'msg':'\\u8bf7\\u6c42\\u6210\\u529f','data':'WDlwdnBoSkFDeS96bVdIYjg4WUNaaXVuV3NTQ3JHWU9t.........'}";
-            NotifyPayResponse resonpse = ApiClient.callback().pay(json_string);
-            System.out.println("response_body:" + resonpse);
+			ApiResponse res = pwfClient.getApiResponse(json_string);
+			if (res.isSuccess()) {
+	        	
+	        	if(res.Verify()) {
+	        		System.out.println(res.getDataMap().toString());
+	        	}else {
+	        		throw new RuntimeException("the signature check fails, please check whether the Pwf platform public key or merchant private key is configured correctly.");
+	        	}
+	        }
             
         } catch (Exception e) {
             System.err.println("調用遭遇異常，原因：" + e.getMessage());
@@ -79,8 +95,7 @@ public class Main {
         Config config = new Config();
         config.apiUrl = "<-- 請填寫平台分配的接口域名，例如：https://xxx.pwf.com/ -->";
         config.appToken = "<-- 請填寫您的appToken，例如：377b26eb8c25bd... -->";
-        config.merchantNo = "<-- 請填寫您的商戶號，例如：202207...964 -->";
-    
+
         //語系(參考文檔中最下方語系表，如:TC)
         config.lang = "TC";
         

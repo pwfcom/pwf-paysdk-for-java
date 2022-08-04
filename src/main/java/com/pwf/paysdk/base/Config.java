@@ -18,5 +18,8 @@ public class Config {
     public String pwfPublicCertPath;
 	
 	@Validation(required = true)
+    public String notifyUrl;	
+	
+	@Validation(required = true)
     public String lang;	
 }
