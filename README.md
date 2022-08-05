@@ -54,10 +54,10 @@ public class Main {
             params.put("out_trade_no", "order-009");
             params.put("subject", "order-test");
             params.put("timestamp", 1657895835);
-            params.put("notify_url", "https://www.notify.com/notify");
+            params.put("notify_url", "https://www.notify.com/notify"); //此處的異步回調通知地址需與商戶中心配置的異步通知地址一致
             params.put("return_url", "https://www.return.com/return");
             params.put("collection_model", 1);
-            params.put("merchant_no", "2022072091622963");
+            params.put("merchant_no", "<-- 請填寫您的商戶號，例如：2022......81170 -->");
             
 			ApiResponse res = pwfClient.execute("/api/v2/wallet/payAddress",params);
 	        if (res.isSuccess()) {
